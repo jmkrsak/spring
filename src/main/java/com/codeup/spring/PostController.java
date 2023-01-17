@@ -1,7 +1,12 @@
 package com.codeup.spring;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class PostController {
@@ -29,5 +34,35 @@ public class PostController {
     public String createPost() {
         return "create a new post";
     }
+
+    @RequestMapping(path = "/roll-dice", method = RequestMethod.GET)
+    public String rollDice() {
+        return "roll-dice";
+    }
+
+    @PostMapping("/roll-dice")
+    public void rolledDice(@RequestParam(name = "guess") int guess, HttpServletResponse resp) throws IOException {
+        resp.sendRedirect("/roll-dice/" + guess);
+    }
+
+    @GetMapping(path = "/roll-dice/{guess}")
+        public String showGuess(@PathVariable int guess, Model model) {
+
+            int random = (int) (Math.random() * 6) + 1;
+
+            String checkInput;
+            if (guess == random) {
+                checkInput = "You guessed correctly!";
+            } else {
+                checkInput = "You guessed incorrectly!";
+            }
+
+            model.addAttribute("random", random);
+            model.addAttribute("guess", guess);
+            model.addAttribute("checkInput", checkInput);
+
+            return "roll-dice-n";
+
+        }
 
 }
