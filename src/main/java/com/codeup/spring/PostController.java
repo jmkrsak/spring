@@ -50,16 +50,18 @@ public class PostController {
 
             int random = (int) (Math.random() * 6) + 1;
 
-            String checkInput;
-            if (guess == random) {
-                checkInput = "You guessed correctly!";
+            String message;
+
+            boolean checkInput = guess == random;
+            if (checkInput) {
+                message = "You guessed correctly!";
             } else {
-                checkInput = "You guessed incorrectly!";
+                message = "You guessed incorrectly!";
             }
 
             model.addAttribute("random", random);
             model.addAttribute("guess", guess);
-            model.addAttribute("checkInput", checkInput);
+            model.addAttribute("checkInput", message);
 
             return "roll-dice-n";
 
