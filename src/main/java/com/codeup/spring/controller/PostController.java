@@ -20,29 +20,29 @@ public class PostController {
         this.postDao = postDao;
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/posts/show")
     public String index(Model model) {
         model.addAttribute("posts", postDao.findAll());
         return "posts/index";
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/posts/index")
     @ResponseBody
     public String posts() {
         return "posts index page";
     }
 
-    @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/posts/index/{id}", method = RequestMethod.GET)
     @ResponseBody
     public String viewPost(@PathVariable long id) {
         return "view an individual post. This is post number " + id;
     }
 
-//    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String createPostForm() {
-//        return "create";
-//    }
+    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
+    @ResponseBody
+    public String createPostForm() {
+        return "/posts/create";
+    }
 
     @PostMapping("/posts/create")
     public void createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, HttpServletResponse response, HttpServletRequest request) throws IOException {
