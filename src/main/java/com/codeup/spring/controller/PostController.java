@@ -23,7 +23,7 @@ public class PostController {
     @GetMapping("/posts/show")
     public String index(Model model) {
         model.addAttribute("posts", postDao.findAll());
-        return "posts/index";
+        return "posts/show";
     }
 
     @GetMapping("/posts/index")
@@ -39,7 +39,6 @@ public class PostController {
     }
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-    @ResponseBody
     public String createPostForm() {
         return "/posts/create";
     }
@@ -48,7 +47,7 @@ public class PostController {
     public void createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, HttpServletResponse response, HttpServletRequest request) throws IOException {
         Post post = new Post(title, body);
         postDao.save(post);
-        response.sendRedirect("/posts");
+        response.sendRedirect("/posts/show");
     }
 
     @RequestMapping(path = "/roll-dice", method = RequestMethod.GET)
