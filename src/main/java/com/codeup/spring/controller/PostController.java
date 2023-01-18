@@ -1,15 +1,30 @@
-package com.codeup.spring;
+package com.codeup.spring.controller;
 
+import com.codeup.spring.models.Post;
+import com.codeup.spring.repository.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
 public class PostController {
+
+    private final PostRepository postDao;
+
+    public PostController(PostRepository postDao) {
+        this.postDao = postDao;
+    }
+
+    @GetMapping("/posts")
+    public String index(Model model) {
+        model.addAttribute("posts", postDao.findAll());
+        return "posts/index";
+    }
 
     @GetMapping("/posts")
     @ResponseBody
@@ -23,16 +38,17 @@ public class PostController {
         return "view an individual post. This is post number " + id;
     }
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-    @ResponseBody
-    public String viewCreateForm() {
-        return "view the form for creating a post";
-    }
+//    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String createPostForm() {
+//        return "create";
+//    }
 
     @PostMapping("/posts/create")
-    @ResponseBody
-    public String createPost() {
-        return "create a new post";
+    public void createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        Post post = new Post(title, body);
+        postDao.save(post);
+        response.sendRedirect("/posts");
     }
 
     @RequestMapping(path = "/roll-dice", method = RequestMethod.GET)
