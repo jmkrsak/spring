@@ -21,21 +21,21 @@ public class PostController {
     }
 
     @GetMapping("/posts/show")
-    public String index(Model model) {
+    public String show(Model model) {
         model.addAttribute("posts", postDao.findAll());
         return "posts/show";
     }
 
-    @GetMapping("/posts/index")
-    @ResponseBody
-    public String posts() {
-        return "posts index page";
+    @PostMapping("/posts/show")
+    public void viewById(@RequestParam(name = "id") long id, HttpServletResponse resp, HttpServletRequest req) throws IOException {
+        resp.sendRedirect("/posts/index/" + id);
     }
 
-    @RequestMapping(path = "/posts/index/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public String viewPost(@PathVariable long id) {
-        return "view an individual post. This is post number " + id;
+    @GetMapping(path = "/posts/index/{id}")
+    public String indexById(@PathVariable long id, Model model) {
+        Post post = postDao.getReferenceById(id);
+        model.addAttribute("post", post);
+        return "/posts/index";
     }
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
@@ -44,10 +44,10 @@ public class PostController {
     }
 
     @PostMapping("/posts/create")
-    public void createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public void createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, HttpServletResponse resp, HttpServletRequest req) throws IOException {
         Post post = new Post(title, body);
         postDao.save(post);
-        response.sendRedirect("/posts/show");
+        resp.sendRedirect("/posts/show");
     }
 
     @RequestMapping(path = "/roll-dice", method = RequestMethod.GET)
