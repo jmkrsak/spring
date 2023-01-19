@@ -1,12 +1,12 @@
 package com.codeup.spring.controller;
 
 import com.codeup.spring.models.Post;
-import com.codeup.spring.repository.PostRepository;
+import com.codeup.spring.repositories.PostRepository;
+import com.codeup.spring.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,9 +15,11 @@ import java.io.IOException;
 public class PostController {
 
     private final PostRepository postDao;
+    private final UserRepository userDao;
 
-    public PostController(PostRepository postDao) {
+    public PostController(PostRepository postDao, UserRepository userDao) {
         this.postDao = postDao;
+        this.userDao = userDao;
     }
 
     @GetMapping("/posts/show")

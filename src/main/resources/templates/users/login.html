@@ -7,22 +7,23 @@
 
 <th:block th:replace="~{partials/navbar.html :: navbar}"></th:block>
 
-<div class="container mt-4">
-    <div th:each="item : ${posts}" class="card mb-2">
-        <div class="card-header">
-            <p th:text="${item.getTitle()}" />
-        </div>
-        <div class="card-body">
-            <p th:text="${item.getBody()}" />
-        </div>
-        <form action="/posts/show" method="post">
-            <div class="card-footer">
-                <input type="hidden" name="id" value="${item.getId()}">
-                <button type="submit" class="btn btn-primary">View This Post</button>
-            </div>
-        </form>
+    <h1>Log In</h1>
+    <div th:if="${param.error}">
+        Invalid Username and Password.
     </div>
-</div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+
+    <form th:action="@{/users/login}" method="post">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" />
+        <input type="submit" value="Log In" />
+    </form>
+
+<a href="/users/sign-up"><button>Create an account</button></a>
 
 <th:block th:replace="~{partials/footer.html :: footer}"></th:block>
 
