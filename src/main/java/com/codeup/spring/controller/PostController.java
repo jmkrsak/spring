@@ -65,6 +65,7 @@ public class PostController {
         return "redirect:/posts/show";
     }
 
+
 //    @PostMapping("/create")
 //    public String creates(){
 //        return "redirect:/posts/show";
