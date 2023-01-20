@@ -23,36 +23,37 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/users/login")
-    public String showSignUpForm(Model model) {
-        model.addAttribute("user", new User());
-        return "/users/login";
-    }
+//    @GetMapping("/users/login")
+//    public String showSignUpForm(Model model) {
+//        model.addAttribute("user", new User());
+//        return "/users/login";
+//    }
+//
+//    @PostMapping("/users/login")
+//    public String loginUser(@ModelAttribute User user) {
+//        User userFromDb = usersDao.findByUsername(user.getUsername());
+//        if (userFromDb == null) {
+//            return "redirect:/users/login";
+//        } else if (passwordEncoder.matches(user.getPassword(), userFromDb.getPassword())) {
+//            return "redirect:/posts/create";
+//        } else {
+//            return "redirect:/users/login";
+//        }
+//    }
 
-    @PostMapping("/users/login")
-    public String loginUser(@ModelAttribute User user) {
-        User userFromDb = usersDao.findByUsername(user.getUsername());
-        if (userFromDb == null) {
-            return "redirect:/users/login";
-        } else if (passwordEncoder.matches(user.getPassword(), userFromDb.getPassword())) {
-            return "redirect:/posts/show";
-        } else {
-            return "redirect:/users/login";
-        }
+    @GetMapping("/users/sign-up")
+    public String showSignupForm(Model model) {
+        model.addAttribute("user", new User());
+        return "/users/sign-up";
+
     }
 
     @PostMapping("/users/sign-up")
-    public String saveUser(@RequestParam(name = "username") String username, @RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
-        User user = new User(username, email, passwordEncoder.encode(password));
+    public String saveUser(@ModelAttribute User user) {
+        String hash = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hash);
         usersDao.save(user);
-        return "/users/login";
-    }
-
-    @GetMapping("/users/sign-up")
-    public String showLoginForm() {
-
-
-        return "/users/sign-up";
+        return "redirect:/users/login";
     }
 
 }

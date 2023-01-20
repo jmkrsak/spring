@@ -58,6 +58,13 @@ public class Post {
         this.user = user;
     }
 
+    public Post(long id, String title, String body, User user) {
+        this.id = id;
+        this.title = title;
+        this.body = body;
+        this.user = user;
+    }
+
     public Post(long id, String title, String body) {
         this.id = id;
         this.title = title;

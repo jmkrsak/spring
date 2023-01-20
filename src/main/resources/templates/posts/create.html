@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:replace="~{partials/header.html :: header}"></th:block>
 
@@ -7,7 +8,7 @@
 
 <th:block th:replace="~{partials/navbar.html :: navbar}"></th:block>
 <div class="container mt-4">
-    <form action="/posts/create" method="post">
+    <form th:action="@{/posts/create}" th:method="POST" th:object="${post}">
         <div class="card">
             <div class="card-header">
                 <p class="fw-bold">Create a post</p>
@@ -15,11 +16,11 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label for="title" class="form-label">Enter a title for your post</label>
-                    <input name="title" type="text" class="form-control" id="title" placeholder="title">
+                    <input th:field="*{title}" name="title" type="text" class="form-control" id="title" placeholder="title">
                 </div>
                 <div class="mb-3">
                     <label for="body" class="form-label">Enter post here</label>
-                    <textarea name="body" class="form-control" id="body" rows="5"></textarea>
+                    <textarea th:field="*{body}" name="body" class="form-control" id="body" rows="5"></textarea>
                 </div>
             </div>
             <div class="card-footer">
@@ -27,6 +28,16 @@
             </div>
         </div>
     </form>
+
+
+<!--    <form >-->
+
+<!--        -->
+<!--        -->
+<!--        <button type="submit"></button>-->
+
+<!--    </form>-->
+
 </div>
 
 <th:block th:replace="~{partials/footer.html :: footer}"></th:block>

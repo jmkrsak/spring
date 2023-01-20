@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:replace="~{partials/header.html :: header}"></th:block>
 
@@ -15,15 +16,26 @@
         You have been logged out.
     </div>
 
-    <form th:action="@{/users/login}" method="post">
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text" />
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" />
-        <input type="submit" value="Log In" />
-    </form>
+    <div class="container mb-4">
+        <form th:action="@{/users/login}" method="post">
+            <div class="row g-3">
+                <div class="input-group mb-3 col-sm-5">
+                    <span class="input-group-text">Username</span>
+                    <input id="username" type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3 col-sm-5">
+                    <span class="input-group-text">Password</span>
+                    <input id="password" type="text" name="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <input class="btn btn-primary col-sm-2" type="submit" value="Log In" />
+            </div>
+        </form>
+    </div>
 
-<a href="/users/sign-up"><button>Create an account</button></a>
+    <div class="container mb-4 row">
+        <label for="create-account">Don't have an account? Click here to create one.</label>
+        <a href="/users/sign-up"><button id="create-account" class="btn btn-danger">Create an account</button></a>
+    </div>
 
 <th:block th:replace="~{partials/footer.html :: footer}"></th:block>
 

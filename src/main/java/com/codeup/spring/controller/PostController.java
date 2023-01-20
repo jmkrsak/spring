@@ -1,15 +1,18 @@
 package com.codeup.spring.controller;
 
 import com.codeup.spring.models.Post;
+import com.codeup.spring.models.User;
 import com.codeup.spring.repositories.PostRepository;
 import com.codeup.spring.repositories.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Controller
 public class PostController {
@@ -25,13 +28,16 @@ public class PostController {
     @GetMapping("/posts/show")
     public String show(Model model) {
         model.addAttribute("posts", postDao.findAll());
-        return "posts/show";
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(user.getUsername());
+        return "/posts/show";
     }
 
-    @PostMapping("/posts/show")
-    public void viewById(@RequestParam(name = "id") long id, HttpServletResponse resp, HttpServletRequest req) throws IOException {
-        resp.sendRedirect("/posts/index/" + id);
-    }
+//    @PostMapping("/posts/show")
+//    public String viewById(@RequestParam(name = "id") long id, Model model) {
+//        long newId = post.getId();
+//        return "redirect:/posts/show" + newId;
+//    }
 
     @GetMapping(path = "/posts/index/{id}")
     public String indexById(@PathVariable long id, Model model) {
@@ -41,16 +47,27 @@ public class PostController {
     }
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-    public String createPostForm() {
+    public String createPostForm(Model model) {
+        model.addAttribute("post", new Post());
         return "/posts/create";
     }
 
     @PostMapping("/posts/create")
-    public void createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, HttpServletResponse resp, HttpServletRequest req) throws IOException {
-        Post post = new Post(title, body);
+    public String createPost(@ModelAttribute Post post) {
+        System.out.println("controller reached");
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(user.getUsername());
+//        User user = userDao.findByUsername((String) auth.getPrincipal());
+        post.setUser(user);
         postDao.save(post);
-        resp.sendRedirect("/posts/show");
+//        resp.sendRedirect("/posts/show");
+        return "redirect:/posts/show";
     }
+
+//    @PostMapping("/create")
+//    public String creates(){
+//        return "redirect:/posts/show";
+//    }
 
     @RequestMapping(path = "/roll-dice", method = RequestMethod.GET)
     public String rollDice() {

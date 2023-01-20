@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:replace="~{partials/header.html :: header}"></th:block>
 
@@ -15,10 +16,10 @@
         <div class="card-body">
             <p th:text="${item.getBody()}" />
         </div>
-        <form action="/posts/show" method="post">
+        <form action="/posts/show" method="POST">
             <div class="card-footer">
-                <input type="hidden" name="id" value="${item.getId()}">
-                <button type="submit" class="btn btn-primary">View This Post</button>
+                <button th:value="${posts.getId()}" name="id" type="submit" class="btn btn-primary">View This Post</button>
+<!--                <input th:field="*{post.getId()}" name="id" type="submit" class="btn btn-primary">View This Post />-->
             </div>
         </form>
     </div>
