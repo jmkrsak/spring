@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -33,11 +34,11 @@ public class PostController {
         return "/posts/show";
     }
 
-//    @PostMapping("/posts/show")
-//    public String viewById(@RequestParam(name = "id") long id, Model model) {
-//        long newId = post.getId();
-//        return "redirect:/posts/show" + newId;
-//    }
+    @PostMapping("/posts/show")
+    public void viewById(@RequestParam(name = "id") long id, HttpServletResponse resp, HttpServletRequest req) throws IOException {
+        resp.sendRedirect("/posts/show/" + id);
+
+    }
 
     @GetMapping(path = "/posts/index/{id}")
     public String indexById(@PathVariable long id, Model model) {
@@ -52,7 +53,7 @@ public class PostController {
         return "/posts/create";
     }
 
-    @PostMapping("/posts/create")
+    @PostMapping("/posts/creates")
     public String createPost(@ModelAttribute Post post) {
         System.out.println("controller reached");
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
