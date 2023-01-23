@@ -40,7 +40,7 @@ public class SecurityConfiguration {
 //                .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/posts/show") // user's home page, it can be any URL
+                .defaultSuccessUrl("/show") // user's home page, it can be any URL
                 .permitAll() // Anyone can go to the login page
                 /* Logout configuration */
                 .and()
@@ -49,13 +49,13 @@ public class SecurityConfiguration {
                 /* Pages that can be viewed without having to log in */
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/login", "/users/sign-up", "/posts/show") // anyone can see the home and the ads pages
+                .requestMatchers("/login", "/sign-up", "/show") // anyone can see the home and the ads pages
                 .permitAll()
                 /* Pages that require authentication */
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "/posts/**"// only authenticated users can edit ads
+                        "/create", "/index"// only authenticated users can edit ads
                 )
                 .authenticated()
                 .and()

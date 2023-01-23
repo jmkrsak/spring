@@ -5,6 +5,7 @@ import com.codeup.spring.models.User;
 import com.codeup.spring.repositories.PostRepository;
 import com.codeup.spring.repositories.UserRepository;
 import com.codeup.spring.services.EmailService;
+//import com.codeup.spring.services.PostService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -31,13 +33,23 @@ public class PostController {
     @Autowired
     private EmailService emailService;
 
+//    private PostService postService;
+
     public PostController(PostRepository postDao, UserRepository userDao, EmailService emailService) {
         this.postDao = postDao;
         this.userDao = userDao;
         this.emailService = emailService;
+//        this.postService = postService;
     }
 
-    @GetMapping("/posts/show")
+//    @GetMapping("/posts/show")
+//    public String show(Model model) {
+//        List<Post> posts = postService.getAllPosts();
+//        model.addAttribute("posts", posts);
+//        return "/posts/show";
+//    }
+
+    @GetMapping("/show")
     public String show(Model model) {
         model.addAttribute("posts", postDao.findAll());
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -58,13 +70,13 @@ public class PostController {
         return "/posts/index";
     }
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
+    @RequestMapping(path = "/create", method = RequestMethod.GET)
     public String createPostForm(Model model) {
         model.addAttribute("post", new Post());
         return "/posts/create";
     }
 
-    @PostMapping("/posts/creates")
+    @PostMapping("/creates")
     public String createPost(@ModelAttribute Post post) {
         System.out.println("controller reached");
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -74,7 +86,7 @@ public class PostController {
         emailService.prepareAndSend(post, post.getTitle(), post.getBody());
         postDao.save(post);
 //        resp.sendRedirect("/posts/show");
-        return "redirect:/posts/show";
+        return "redirect:/show";
     }
 
 
