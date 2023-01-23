@@ -4,6 +4,7 @@ import com.codeup.spring.models.Post;
 import com.codeup.spring.models.User;
 import com.codeup.spring.repositories.PostRepository;
 import com.codeup.spring.repositories.UserRepository;
+import com.codeup.spring.services.EmailService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,9 +28,13 @@ public class PostController {
     @Autowired
     private UserRepository userDao;
 
-    public PostController(PostRepository postDao, UserRepository userDao) {
+    @Autowired
+    private EmailService emailService;
+
+    public PostController(PostRepository postDao, UserRepository userDao, EmailService emailService) {
         this.postDao = postDao;
         this.userDao = userDao;
+        this.emailService = emailService;
     }
 
     @GetMapping("/posts/show")
@@ -66,6 +71,7 @@ public class PostController {
         System.out.println(user.getUsername());
 //        User user = userDao.findByUsername((String) auth.getPrincipal());
         post.setUser(user);
+        emailService.prepareAndSend(post, post.getTitle(), post.getBody());
         postDao.save(post);
 //        resp.sendRedirect("/posts/show");
         return "redirect:/posts/show";
