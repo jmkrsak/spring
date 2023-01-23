@@ -4,22 +4,28 @@ import com.codeup.spring.models.Post;
 import com.codeup.spring.models.User;
 import com.codeup.spring.repositories.PostRepository;
 import com.codeup.spring.repositories.UserRepository;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Controller
+@NoArgsConstructor
 public class PostController {
 
-    private final PostRepository postDao;
-    private final UserRepository userDao;
+    @Autowired
+    private PostRepository postDao;
+
+    @Autowired
+    private UserRepository userDao;
 
     public PostController(PostRepository postDao, UserRepository userDao) {
         this.postDao = postDao;
@@ -34,11 +40,11 @@ public class PostController {
         return "/posts/show";
     }
 
-    @PostMapping("/posts/show")
-    public void viewById(@RequestParam(name = "id") long id, HttpServletResponse resp, HttpServletRequest req) throws IOException {
-        resp.sendRedirect("/posts/show/" + id);
-
-    }
+//    @PostMapping("/posts/show")
+//    public void viewById(@RequestParam(name = "id") long id, HttpServletResponse resp, HttpServletRequest req) throws IOException {
+//        resp.sendRedirect("/posts/show/" + id);
+//
+//    }
 
     @GetMapping(path = "/posts/index/{id}")
     public String indexById(@PathVariable long id, Model model) {
@@ -76,10 +82,10 @@ public class PostController {
         return "roll-dice";
     }
 
-    @PostMapping("/roll-dice")
-    public void rolledDice(@RequestParam(name = "guess") int guess, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect("/roll-dice/" + guess);
-    }
+//    @PostMapping("/roll-dice")
+//    public void rolledDice(@RequestParam(name = "guess") int guess, HttpServletResponse resp) throws IOException {
+//        resp.sendRedirect("/roll-dice/" + guess);
+//    }
 
     @GetMapping(path = "/roll-dice/{guess}")
         public String showGuess(@PathVariable int guess, Model model) {

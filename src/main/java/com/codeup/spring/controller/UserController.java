@@ -2,20 +2,26 @@ package com.codeup.spring.controller;
 
 import com.codeup.spring.models.User;
 import com.codeup.spring.repositories.UserRepository;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@NoArgsConstructor
 public class UserController {
 
+    @Autowired
     private UserRepository usersDao;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public UserController(UserRepository usersDao, PasswordEncoder passwordEncoder) {
@@ -53,7 +59,7 @@ public class UserController {
         String hash = passwordEncoder.encode(user.getPassword());
         user.setPassword(hash);
         usersDao.save(user);
-        return "redirect:/users/login";
+        return "redirect:/login";
     }
 
 }
