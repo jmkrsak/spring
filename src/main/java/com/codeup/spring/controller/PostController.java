@@ -76,7 +76,7 @@ public class PostController {
         return "/posts/create";
     }
 
-    @PostMapping("/creates")
+    @PostMapping("/create")
     public String createPost(@ModelAttribute Post post) {
         System.out.println("controller reached");
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
