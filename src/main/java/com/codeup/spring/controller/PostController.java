@@ -6,6 +6,8 @@ import com.codeup.spring.repositories.PostRepository;
 import com.codeup.spring.repositories.UserRepository;
 import com.codeup.spring.services.EmailService;
 //import com.codeup.spring.services.PostService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,11 +59,18 @@ public class PostController {
         return "/posts/show";
     }
 
-//    @PostMapping("/posts/show")
-//    public void viewById(@RequestParam(name = "id") long id, HttpServletResponse resp, HttpServletRequest req) throws IOException {
-//        resp.sendRedirect("/posts/show/" + id);
-//
-//    }
+    @GetMapping("/posts/show/{id}")
+    public String showById(@PathVariable long id, Model model) {
+        Post post = postDao.getOne(id);
+        model.addAttribute("post", post);
+        return "/posts/show";
+    }
+
+    @PostMapping("/posts/show")
+    public String viewById(@RequestParam(name = "id") long id) throws IOException {
+        return "redirect: /show/" + id;
+
+    }
 
     @GetMapping(path = "/posts/index/{id}")
     public String indexById(@PathVariable long id, Model model) {
