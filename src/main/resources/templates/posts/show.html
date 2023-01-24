@@ -12,7 +12,7 @@
     <div class="card mb-2">
         <div class="card-header d-flex justify-content-between">
             <p th:text="${post.title}" />
-            <p th:text="${user.email}" />
+            <p th:text="${post.getUser().getEmail()}" />
         </div>
         <div class="card-body">
             <p th:text="${post.body}" />

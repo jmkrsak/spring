@@ -55,19 +55,20 @@ public class PostController {
 
     @PostMapping("/posts")
     public String create(@ModelAttribute Post post, @RequestParam(name="button") long id) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        post.setUser(user);
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        post.setUser(user);
         return "redirect:/show/" + id;
     }
 
     @GetMapping("/show/{id}")
     public String showById(@PathVariable long id, Model model) {
         System.out.println(id);
-        User user = userDao.getReferenceById(id);
+//        User user = postDao.getReferenceById(user);
         Post post = postDao.getReferenceById(id);
         System.out.println(post.getTitle());
         model.addAttribute("post", post);
-        model.addAttribute("user", user);
+//        String email = post.getUser().getEmail();
+//        model.addAttribute("user", user);
         return "posts/show";
     }
 
@@ -108,7 +109,7 @@ public class PostController {
         emailService.prepareAndSend(post, post.getTitle(), post.getBody());
         postDao.save(post);
 //        resp.sendRedirect("/posts/show");
-        return "redirect:/index";
+        return "redirect:/posts";
     }
 
 
