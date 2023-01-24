@@ -32,30 +32,26 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    // This method allows us to configure settings for different URL paths and who can access them.
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                /* Login configuration */
-//                .csrf().disable()
+
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/posts") // user's home page, it can be any URL
-                .permitAll() // Anyone can go to the login page
-                /* Logout configuration */
+                .defaultSuccessUrl("/posts")
+                .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login?logout") // append a query string value
-                /* Pages that can be viewed without having to log in */
+                .logoutSuccessUrl("/login?logout")
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/login", "/sign-up", "/posts") // anyone can see the home and the ads pages
+                .requestMatchers("/login", "/sign-up", "/posts")
                 .permitAll()
-                /* Pages that require authentication */
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "/create","/show", "/show/**"// only authenticated users can edit ads
+                        "/create","/show", "/show/**"
                 )
                 .authenticated()
                 .and()
