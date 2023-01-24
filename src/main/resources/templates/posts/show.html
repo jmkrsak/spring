@@ -17,12 +17,16 @@
         <div class="card-body">
             <p th:text="${post.body}" />
         </div>
-        <form>
-            <div class="card-footer d-flex justify-content-between">
+        <div class="card-footer d-flex justify-content-between">
+
+            <button onclick="history.back()" class="btn btn-primary">Back to Posts</button>
+            <form>
                 <button name="button" type="submit" class="btn btn-success">Edit This Post</button>
+            </form>
+            <form>
                 <button name="button" type="submit" class="btn btn-danger">Delete This Post</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
