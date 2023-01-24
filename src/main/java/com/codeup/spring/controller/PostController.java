@@ -6,8 +6,6 @@ import com.codeup.spring.repositories.PostRepository;
 import com.codeup.spring.repositories.UserRepository;
 import com.codeup.spring.services.EmailService;
 //import com.codeup.spring.services.PostService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,9 +16,6 @@ import org.springframework.web.bind.annotation.*;
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Controller
 @NoArgsConstructor
@@ -51,33 +46,51 @@ public class PostController {
 //        return "/posts/show";
 //    }
 
-    @GetMapping("/show")
+    @GetMapping("/posts")
     public String show(Model model) {
         model.addAttribute("posts", postDao.findAll());
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(user.getUsername());
-        return "/posts/show";
-    }
-
-    @GetMapping("/posts/show/{id}")
-    public String showById(@PathVariable long id, Model model) {
-        Post post = postDao.getOne(id);
-        model.addAttribute("post", post);
-        return "/posts/show";
-    }
-
-    @PostMapping("/posts/show")
-    public String viewById(@RequestParam(name = "id") long id) throws IOException {
-        return "redirect: /show/" + id;
-
-    }
-
-    @GetMapping(path = "/posts/index/{id}")
-    public String indexById(@PathVariable long id, Model model) {
-        Post post = postDao.getReferenceById(id);
-        model.addAttribute("post", post);
         return "/posts/index";
     }
+
+    @PostMapping("/posts")
+    public String create(@ModelAttribute Post post, @RequestParam(name="button") long id) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        post.setUser(user);
+        return "redirect:/show/" + id;
+    }
+
+    @GetMapping("/show/{id}")
+    public String showById(@PathVariable long id, Model model) {
+        System.out.println(id);
+        User user = userDao.getReferenceById(id);
+        Post post = postDao.getReferenceById(id);
+        System.out.println(post.getTitle());
+        model.addAttribute("post", post);
+        model.addAttribute("user", user);
+        return "posts/show";
+    }
+
+
+//    @GetMapping("/posts/show")
+//    public String showById(@PathVariable long id, Model model) {
+//        Post post = postDao.getOne(id);
+//        model.addAttribute("post", post);
+//        return "index";
+//    }
+
+//    @PostMapping("/posts/show/{id}")
+//    public String viewById(@RequestParam(name = "id") long id) throws IOException {
+//        return "redirect: /show-n";
+//
+//    }
+
+//    @GetMapping(path = "/posts/index/{id}")
+//    public String indexById(@PathVariable long id, Model model) {
+//        Post post = postDao.getReferenceById(id);
+//        model.addAttribute("post", post);
+//        return "shows";
+//    }
 
     @RequestMapping(path = "/create", method = RequestMethod.GET)
     public String createPostForm(Model model) {
@@ -95,7 +108,7 @@ public class PostController {
         emailService.prepareAndSend(post, post.getTitle(), post.getBody());
         postDao.save(post);
 //        resp.sendRedirect("/posts/show");
-        return "redirect:/show";
+        return "redirect:/index";
     }
 
 

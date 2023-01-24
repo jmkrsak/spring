@@ -9,13 +9,19 @@
 <th:block th:replace="~{partials/navbar.html :: navbar}"></th:block>
 
 <div class="container mt-4">
-    <div class="card mb-2">
+    <div th:each="item : ${posts}" class="card mb-2">
         <div class="card-header">
-            <p th:text="${post.title}" />
+            <p th:text="${item.title}" />
         </div>
         <div class="card-body">
-            <p th:text="${post.body}" />
+            <p th:text="${item.body}" />
         </div>
+        <form th:action="@{/posts}" th:method="POST">
+            <div class="card-footer">
+                <button name="button" th:value="*{item.id}" type="submit" class="btn btn-primary">View This Post</button>
+<!--                <input th:field="*{id}" name="id" type="hidden" class="btn btn-primary">View This Post />-->
+            </div>
+        </form>
     </div>
 </div>
 
