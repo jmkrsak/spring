@@ -17,10 +17,10 @@
             <p th:text="${item.body}" />
         </div>
         <div class="card-footer d-flex justify-content-between">
-            <form action="/profile" method="POST">
+            <form th:action="@{/profile}" th:method="POST">
                 <button name="button" th:value="*{item.id}" type="submit" class="btn btn-success">Edit This Post</button>
             </form>
-            <form action="/delete" method="POST">
+            <form th:action="@{/delete}" th:method="POST">
                 <button name="button" th:value="*{item.id}" type="submit" class="btn btn-danger">Delete This Post</button>
             </form>
         </div>
