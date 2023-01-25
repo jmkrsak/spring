@@ -80,13 +80,23 @@ public class PostController {
         return "posts/show";
     }
 
-    @PatchMapping("/edit")
-    public String editPost(@ModelAttribute Post post, @PathVariable long id) {
+    @PutMapping ("/edit")
+    public String editPost(@ModelAttribute Post post, @RequestParam(name="button") long id) {
+
+        System.out.println();
+        postDao.getReferenceById(id).setTitle(post.getTitle());
+        postDao.getReferenceById(id).setBody(post.getBody());
+
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        post.setUser(user);
 //        postDao.getReferenceById(id).setTitle(post.getTitle());
 //        postDao.getReferenceById(id).setBody(post.getBody());
-        postDao.save(post);
+//        System.out.println(post.getId());
+        System.out.println(post.getTitle());
+        System.out.println(post.getBody());
+        postDao.saveOrUpdate(post);
+//        postDao.update(post.getTitle(), post.getBody(), id);
+
         return "redirect:/profile";
     }
 
