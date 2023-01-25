@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @NoArgsConstructor
@@ -39,13 +40,6 @@ public class PostController {
 //        this.postService = postService;
     }
 
-//    @GetMapping("/posts/show")
-//    public String show(Model model) {
-//        List<Post> posts = postService.getAllPosts();
-//        model.addAttribute("posts", posts);
-//        return "/posts/show";
-//    }
-
     @GetMapping("/posts")
     public String show(Model model) {
         model.addAttribute("posts", postDao.findAll());
@@ -53,16 +47,30 @@ public class PostController {
         return "/posts/index";
     }
 
-    @PostMapping("/posts")
-    public String create(@ModelAttribute Post post, @RequestParam(name="button") long id) {
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        post.setUser(user);
-        return "redirect:/show/" + id;
+//    @PostMapping("/edit")
+//    public String editPost(@ModelAttribute Post post, @RequestParam(name="button") long id) {
+////        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+////        post.setUser(user);
+//        return "redirect:/edit/" + id;
+//    }
+
+    @GetMapping("/edit/{id}")
+    public String editPostById(@PathVariable long id, Model model) {
+        System.out.println(id);
+        Post post = postDao.getReferenceById(id);
+        model.addAttribute("post", post);
+        return "posts/edit";
+    }
+
+    @DeleteMapping("/delete")
+    public String deletePostById(@PathVariable long id) {
+        postDao.deleteById(id);
+        return "redirect:/profile";
     }
 
     @GetMapping("/show/{id}")
     public String showById(@PathVariable long id, Model model) {
-        System.out.println(id);
+
 //        User user = postDao.getReferenceById(user);
         Post post = postDao.getReferenceById(id);
         System.out.println(post.getTitle());
@@ -72,26 +80,44 @@ public class PostController {
         return "posts/show";
     }
 
+    @PatchMapping("/edit")
+    public String editPost(@ModelAttribute Post post, @PathVariable long id) {
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        post.setUser(user);
+//        postDao.getReferenceById(id).setTitle(post.getTitle());
+//        postDao.getReferenceById(id).setBody(post.getBody());
+        postDao.save(post);
+        return "redirect:/profile";
+    }
 
-//    @GetMapping("/posts/show")
-//    public String showById(@PathVariable long id, Model model) {
-//        Post post = postDao.getOne(id);
-//        model.addAttribute("post", post);
-//        return "index";
+//    @PatchMapping("/edit")
+//    public String editPost(@ModelAttribute Post post) {
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        post.setUser(user);
+//        postDao.save(post);
+////        resp.sendRedirect("/posts/show");
+//        return "redirect:/profile";
 //    }
 
-//    @PostMapping("/posts/show/{id}")
-//    public String viewById(@RequestParam(name = "id") long id) throws IOException {
-//        return "redirect: /show-n";
-//
-//    }
+    @PostMapping("/posts")
+    public String create(@ModelAttribute Post post, @RequestParam(name="button") long id) {
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        post.setUser(user);
+        return "redirect:/show/" + id;
+    }
 
-//    @GetMapping(path = "/posts/index/{id}")
-//    public String indexById(@PathVariable long id, Model model) {
-//        Post post = postDao.getReferenceById(id);
-//        model.addAttribute("post", post);
-//        return "shows";
-//    }
+    @PostMapping("/profile")
+    public String editThis(@ModelAttribute Post post, @RequestParam(name="button") long id) {
+        return "redirect:/edit/" + id;
+    }
+
+    @GetMapping("/profile")
+    public String profileShowUserPosts(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Post> posts = userDao.findByUsername(user.getUsername()).getPosts();
+        model.addAttribute("posts", posts);
+        return "/posts/profile";
+    }
 
     @RequestMapping(path = "/create", method = RequestMethod.GET)
     public String createPostForm(Model model) {
@@ -112,21 +138,10 @@ public class PostController {
         return "redirect:/posts";
     }
 
-
-//    @PostMapping("/create")
-//    public String creates(){
-//        return "redirect:/posts/show";
-//    }
-
     @RequestMapping(path = "/roll-dice", method = RequestMethod.GET)
     public String rollDice() {
         return "roll-dice";
     }
-
-//    @PostMapping("/roll-dice")
-//    public void rolledDice(@RequestParam(name = "guess") int guess, HttpServletResponse resp) throws IOException {
-//        resp.sendRedirect("/roll-dice/" + guess);
-//    }
 
     @GetMapping(path = "/roll-dice/{guess}")
         public String showGuess(@PathVariable int guess, Model model) {

@@ -39,7 +39,7 @@ public class SecurityConfiguration {
 
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/posts")
+                .defaultSuccessUrl("/profile")
                 .permitAll()
                 .and()
                 .logout()
@@ -51,7 +51,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "/create","/show", "/show/**"
+                        "/profile", "/edit", "/edit/**", "/create", "/show", "/show/**", "posts"
                 )
                 .authenticated()
                 .and()
