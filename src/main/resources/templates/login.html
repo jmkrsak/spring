@@ -36,7 +36,7 @@
 
     <div class="container mb-4 row" sec:authorize="!isAuthenticated()">
         <label for="create-account">Don't have an account? Click here to create one.</label>
-        <a href="/sign-up"><button id="create-account" class="btn btn-danger">Create an account</button></a>
+        <a href="/sign-up"><button id="create-account" class="btn btn-warning">Create an account</button></a>
     </div>
 
 <th:block th:replace="~{partials/footer.html :: footer}"></th:block>
