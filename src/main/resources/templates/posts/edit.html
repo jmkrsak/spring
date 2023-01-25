@@ -21,10 +21,12 @@
                 <div class="mb-3">
                     <label for="body" class="form-label">Edit post here</label>
                     <textarea th:field="*{body}" name="body" class="form-control" id="body" rows="5" th:placeholder="${post.body}"></textarea>
+                    <input type="hidden" th:field="*{id}" name="id" />
+                    <input type="hidden" th:field="*{user}" name="user" />
                 </div>
             </div>
             <div class="card-footer">
-                <button name="button" th:value="*{id}" type="submit" class="btn btn-success">Submit Edit</button>
+                <button type="submit" class="btn btn-success">Submit Edit</button>
             </div>
         </div>
     </form>

@@ -37,7 +37,7 @@ public class PostController {
         this.postDao = postDao;
         this.userDao = userDao;
         this.emailService = emailService;
-//        this.postService = postService;
+
     }
 
     @GetMapping("/posts")
@@ -47,23 +47,16 @@ public class PostController {
         return "/posts/index";
     }
 
-//    @PostMapping("/edit")
-//    public String editPost(@ModelAttribute Post post, @RequestParam(name="button") long id) {
-////        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-////        post.setUser(user);
-//        return "redirect:/edit/" + id;
-//    }
-
     @GetMapping("/edit/{id}")
     public String editPostById(@PathVariable long id, Model model) {
-        System.out.println(id);
+//        System.out.println(id);
         Post post = postDao.getReferenceById(id);
         model.addAttribute("post", post);
         return "posts/edit";
     }
 
-    @DeleteMapping("/delete")
-    public String deletePostById(@PathVariable long id) {
+    @PostMapping("/delete")
+    public String deletePostById(@RequestParam (name="button") long id) {
         postDao.deleteById(id);
         return "redirect:/profile";
     }
@@ -80,23 +73,13 @@ public class PostController {
         return "posts/show";
     }
 
-    @PutMapping ("/edit")
-    public String editPost(@ModelAttribute Post post, @RequestParam(name="button") long id) {
-
-        System.out.println();
-        postDao.getReferenceById(id).setTitle(post.getTitle());
-        postDao.getReferenceById(id).setBody(post.getBody());
-
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        post.setUser(user);
-//        postDao.getReferenceById(id).setTitle(post.getTitle());
-//        postDao.getReferenceById(id).setBody(post.getBody());
-//        System.out.println(post.getId());
-        System.out.println(post.getTitle());
-        System.out.println(post.getBody());
-        postDao.saveOrUpdate(post);
-//        postDao.update(post.getTitle(), post.getBody(), id);
-
+    @PostMapping ("/edit")
+    public String editPost(@ModelAttribute Post post) {
+        System.out.println(post.getId());
+//        Post updatePost = postDao.getReferenceById(id);
+//        updatePost.setTitle(post.getTitle());
+//        updatePost.setBody(post.getBody());
+        postDao.save(post);
         return "redirect:/profile";
     }
 
