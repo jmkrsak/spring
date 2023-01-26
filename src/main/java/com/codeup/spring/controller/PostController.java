@@ -113,25 +113,25 @@ public class PostController {
     }
 
     @GetMapping(path = "/roll-dice/{guess}")
-        public String showGuess(@PathVariable int guess, Model model) {
+    public String showGuess(@PathVariable int guess, Model model) {
 
-            int random = (int) (Math.random() * 6) + 1;
+        int random = (int) (Math.random() * 6) + 1;
 
-            String message;
+        String message;
 
-            boolean checkInput = guess == random;
-            if (checkInput) {
-                message = "You guessed correctly!";
-            } else {
-                message = "You guessed incorrectly!";
-            }
-
-            model.addAttribute("random", random);
-            model.addAttribute("guess", guess);
-            model.addAttribute("checkInput", message);
-
-            return "roll-dice-n";
-
+        boolean checkInput = guess == random;
+        if (checkInput) {
+            message = "You guessed correctly!";
+        } else {
+            message = "You guessed incorrectly!";
         }
+
+        model.addAttribute("random", random);
+        model.addAttribute("guess", guess);
+        model.addAttribute("checkInput", message);
+
+        return "roll-dice-n";
+
+    }
 
 }
