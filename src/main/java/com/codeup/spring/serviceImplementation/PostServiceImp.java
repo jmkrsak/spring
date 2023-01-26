@@ -26,6 +26,8 @@ public class PostServiceImp implements PostService {
 
     }
 
+
+
     public List<Post> profileShowUserPosts() {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -79,6 +81,11 @@ public class PostServiceImp implements PostService {
 
         postDao.deleteById(id);
 
+    }
+
+    @Override
+    public Post findByTitle(String title) {
+        return postDao.findByTitle(title);
     }
 
 }
